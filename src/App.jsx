@@ -1,104 +1,81 @@
 import React, { useMemo, useState } from 'react';
 
 const ICON_PATHS = {
-  grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  home: 'M3 11.5L12 4l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-8.5z',
   search: 'M11 4a7 7 0 105.2 11.7l3.05 3.05 1.4-1.4-3.05-3.05A7 7 0 0011 4zm0 2a5 5 0 110 10 5 5 0 010-10z',
   plus: 'M12 5v14M5 12h14',
   upload: 'M12 16V6m0 0l-4 4m4-4l4 4M5 18h14',
   check: 'M5 12l4 4L19 6',
-  warning: 'M12 3l9 16H3l9-16zm0 5v4m0 4h.01',
+  info: 'M12 17h.01M12 11v-1m0-4h.01M12 22a10 10 0 110-20 10 10 0 010 20z',
   layers: 'M12 3l9 5-9 5-9-5 9-5zm-9 9l9 5 9-5m-18 4l9 5 9-5',
-  spark: 'M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3z',
   clock: 'M12 7v5l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z',
   users: 'M16 14a4 4 0 10-3.9-4.8M8 14a4 4 0 103.9-4.8M3.5 20a6 6 0 0110 0m1 0a6 6 0 016 0',
   filter: 'M4 6h16M7 12h10M10 18h4',
   copy: 'M9 9h10v11H9zM5 5h10v2H7v8H5z',
   file: 'M7 3h7l5 5v13H7zM14 3v5h5',
   arrowRight: 'M5 12h12m-4-4l4 4-4 4',
-  database: 'M12 5c4.4 0 8 1.3 8 3s-3.6 3-8 3-8-1.3-8-3 3.6-3 8-3zm-8 7v4c0 1.7 3.6 3 8 3s8-1.3 8-3v-4m-16 0c0 1.7 3.6 3 8 3s8-1.3 8-3',
-  lock: 'M8 11V8a4 4 0 118 0v3m-7 4h6',
+  spark: 'M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3z',
+  warning: 'M12 3l9 16H3l9-16zm0 5v4m0 4h.01',
+  chart: 'M5 19V9m7 10V5m7 14v-7M4 19h16',
   eye: 'M2.5 12S6.5 6.5 12 6.5 21.5 12 21.5 12 17.5 17.5 12 17.5 2.5 12 2.5 12zm9.5-3a3 3 0 100 6 3 3 0 000-6z',
-  chartBar: 'M5 19V9m7 10V5m7 14v-7M4 19h16',
+  book: 'M5 4.5A2.5 2.5 0 017.5 2H20v18H7.5A2.5 2.5 0 015 17.5v-13zM7.5 2v18',
+  send: 'M3 20l18-8L3 4l3 7 8 1-8 1-3 7z',
+  grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  target: 'M12 4v3m0 10v3M4 12H1m22 0h-3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1m0-12.8l-2.1 2.1M7.7 16.3l-2.1 2.1M12 8a4 4 0 100 8 4 4 0 000-8z',
   route: 'M5 19h3v-3H5v3zm11-11h3V5h-3v3zM8 17h3v-3H8v3zm3-1h3a3 3 0 003-3V8',
-  bolt: 'M13 2L4 14h6l-1 8 9-12h-6l1-8z',
-  help: 'M12 17h.01M9.1 9.5a2.9 2.9 0 115.3 1.5c-.5 1-1.4 1.4-2.1 1.9-.8.5-1.3 1-1.3 2.1',
-  phone: 'M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2zm4 15h.01',
-  tablet: 'M6 4h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z',
-  desktop: 'M4 5h16a2 2 0 012 2v9a2 2 0 01-2 2H4a2 2 0 01-2-2V7a2 2 0 012-2zm5 14h6m-5 0l-1 2m7-2l1 2',
+  shield: 'M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z',
 };
 
-function Icon({ name, size = 18, stroke = 1.8, color = 'currentColor', style }) {
+function Icon({ name, size = 18, stroke = 1.85, color = 'currentColor' }) {
   return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={style}>
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d={ICON_PATHS[name]} />
     </svg>
   );
 }
 
-const navItems = [
-  { id: 'home', label: 'Home', icon: 'grid' },
+const tabs = [
+  { id: 'discover', label: 'Discover', icon: 'home' },
   { id: 'library', label: 'Library', icon: 'search' },
-  { id: 'contribute', label: 'Contribute', icon: 'plus' },
-  { id: 'review', label: 'Review', icon: 'check' },
-  { id: 'adoption', label: 'Adoption', icon: 'chartBar' },
+  { id: 'submit', label: 'Submit', icon: 'plus' },
+  { id: 'help', label: 'How it works', icon: 'info' },
 ];
 
-const metrics = [
-  { label: 'Responses analyzed', value: '14', detail: 'baseline input across roles' },
-  { label: 'Saving at least 10 min', value: '13/14', detail: 'per most common AI task' },
-  { label: 'Saving 30+ min', value: '50%', detail: 'stronger time leverage signal' },
-  { label: 'v1 success range', value: '15–25', detail: 'high-quality reusable entries' },
+const roleOptions = ['All roles', 'Leadership', 'Engineering', 'Product', 'Cross-functional'];
+const typeOptions = ['All types', 'Meeting Prep', 'Debugging', 'Research', 'Content', 'Sales Insight'];
+const reusabilityOptions = ['All levels', 'Personal', 'Team', 'Cross-company'];
+
+const quickFacts = [
+  { icon: 'clock', title: 'Fast to scan', body: 'Each entry is designed to be readable in under two minutes.' },
+  { icon: 'file', title: 'Context first', body: 'Every workflow includes required context, not just prompt text.' },
+  { icon: 'check', title: 'Example included', body: 'Each entry shows at least one sample input and output.' },
 ];
 
-const problemCards = [
-  {
-    title: 'Hard to find what already works',
-    body: 'Someone may have already solved the prompting problem you are still solving alone. Today there is no dependable way to discover that quickly.',
-    icon: 'search',
-  },
-  {
-    title: 'Quality depends too much on individual habits',
-    body: 'Context gaps, re-prompt loops, and inaccurate output usually come from weak prompting structure, not only model quality.',
-    icon: 'warning',
-  },
-  {
-    title: 'Strong workflows stay personal',
-    body: 'Useful patterns do not become shared capability unless they are captured with examples, guidance, and clear limits.',
-    icon: 'layers',
-  },
+const anatomy = [
+  ['Title', 'A short searchable name.'],
+  ['Use case', 'The job this workflow helps you do.'],
+  ['Prompt or steps', 'The exact prompt or short walkthrough.'],
+  ['Required context', 'What to provide before you run it.'],
+  ['Example input and output', 'A concrete pattern to copy and adapt.'],
+  ['Usage notes', 'How to get a stronger result.'],
+  ['Known limitations', 'Where it can break or mislead.'],
+  ['Contributor', 'Who shared it.'],
 ];
 
-const entryFields = [
-  ['Title', 'A short, searchable name.'],
-  ['Use case', 'The job this entry is meant to do.'],
-  ['Role or workflow tag', 'Who should use it and in what setting.'],
-  ['Prompt text or workflow summary', 'The actual prompt, or the steps if it is multi-step.'],
-  ['Required context', 'What the AI needs before this works well.'],
-  ['Example input and output', 'A concrete example of what goes in and what comes out.'],
-  ['Usage notes', 'How to get the best result, what to avoid, and when not to use it.'],
-  ['Known limitations', 'Where it tends to break down or become unreliable.'],
-  ['Contributor', 'Who submitted it for follow-up and improvement.'],
+const reusabilityRows = [
+  { label: 'Personal', desc: 'Useful to one person and not yet ready for broad reuse.', tone: 'slate' },
+  { label: 'Team', desc: 'Reusable within one team with light adaptation.', tone: 'blue' },
+  { label: 'Cross-company', desc: 'Broadly reusable with stable context and clear examples.', tone: 'green' },
 ];
 
-const workflowLevels = [
-  {
-    level: 'Personal',
-    desc: 'Useful to one person, not ready for broad reuse yet.',
-    color: '#6d6f7d',
-  },
-  {
-    level: 'Team',
-    desc: 'Reusable within one team with light adaptation.',
-    color: '#2355d8',
-  },
-  {
-    level: 'Cross-company',
-    desc: 'Broadly reusable with stable context and clear examples.',
-    color: '#0f8f68',
-  },
+const flows = [
+  { title: 'Find', body: 'Search by keyword, role, or workflow type.' },
+  { title: 'Open', body: 'Read what the workflow does and what context it needs.' },
+  { title: 'Adapt', body: 'Use the example to tailor it to your own case.' },
+  { title: 'Run', body: 'Copy the prompt or follow the workflow steps.' },
 ];
 
-const libraryEntries = [
+const entries = [
   {
     id: 'wf-001',
     title: 'Meeting Brief Builder',
@@ -106,19 +83,18 @@ const libraryEntries = [
     role: 'Leadership',
     type: 'Meeting Prep',
     reusability: 'Team',
-    status: 'Approved',
     contributor: 'Ankur',
-    requiredContext: 'Meeting goal, participants, latest notes, open risks, and decisions needed.',
+    requiredContext: 'Meeting goal, participants, recent notes, open risks, and decisions needed.',
     prompt: 'Given the meeting goal, participants, and recent notes, produce a short pre-meeting brief with objective, context, likely objections, decision points, and recommended questions.',
     input: 'Renewal call next Tuesday. Customer is concerned about pricing and implementation speed. Include top risks and likely objections.',
-    output: 'Objective: preserve renewal momentum. Risks: pricing sensitivity, unclear implementation scope. Questions: confirm success criteria, timing constraints, and expansion blockers.',
-    notes: 'Best when recent notes are attached. Use for high-stakes calls, not routine status meetings.',
+    output: 'Objective: preserve renewal momentum. Risks: pricing sensitivity and unclear implementation scope. Questions: confirm success criteria, timing constraints, and expansion blockers.',
+    notes: 'Works best when recent notes are attached. Use for high-stakes meetings, not routine status calls.',
     limitations: 'Can sound too certain if the notes are stale, thin, or contradictory.',
-    failures: 'Thin notes, missing stakeholder context, and unclear meeting goal.',
+    failures: 'Missing stakeholder context, stale notes, and unclear meeting objective.',
     readTime: '90 sec',
     views: 28,
     copies: 11,
-    updated: 'Mar 19, 2026',
+    featured: true,
   },
   {
     id: 'wf-002',
@@ -127,28 +103,26 @@ const libraryEntries = [
     role: 'Engineering',
     type: 'Debugging',
     reusability: 'Cross-company',
-    status: 'Approved',
     contributor: 'Engineering seed contributor',
     requiredContext: 'Expected behavior, actual behavior, relevant file or snippet, environment, logs, attempted fixes, and constraints.',
     prompt: 'Analyze the bug using the provided expected behavior, actual behavior, logs, relevant files, and attempted fixes. Return ranked hypotheses, next checks, and the safest first action.',
     input: 'API returns 500 after auth refactor. Expected 200 with valid token. Logs show timeout after middleware update.',
-    output: 'Most likely causes: middleware order, stale env var, token parsing regression. First checks: compare middleware chain, validate token decode path, review timeout config.',
-    notes: 'This works better as a template than a raw prompt. Fill every context field before use.',
+    output: 'Most likely causes: middleware order, stale env var, token parsing regression. First checks: compare middleware chain, validate token decode path, and review timeout config.',
+    notes: 'Works better as a template than a raw prompt. Fill every context field before use.',
     limitations: 'Weak when architecture context is missing. Can invent system behavior if the excerpt is too small.',
-    failures: 'Incomplete logs, unclear expected behavior, omitted constraints.',
+    failures: 'Incomplete logs, omitted constraints, and unclear expected behavior.',
     readTime: '2 min',
     views: 34,
     copies: 17,
-    updated: 'Mar 20, 2026',
+    featured: true,
   },
   {
     id: 'wf-003',
     title: 'Research Synthesis Draft',
-    useCase: 'Convert scattered notes into a clean first synthesis for a memo, working session, or recommendation.',
+    useCase: 'Turn scattered notes into a clean first synthesis for a memo, working session, or recommendation.',
     role: 'Product',
     type: 'Research',
     reusability: 'Team',
-    status: 'Approved',
     contributor: 'Follow-up interview participant',
     requiredContext: 'Raw notes, audience, objective, preferred length, and the decision this should support.',
     prompt: 'Group the notes by theme, separate signal from opinion, identify tensions, and produce a concise synthesis with implications and unanswered questions.',
@@ -160,7 +134,7 @@ const libraryEntries = [
     readTime: '100 sec',
     views: 23,
     copies: 9,
-    updated: 'Mar 18, 2026',
+    featured: true,
   },
   {
     id: 'wf-004',
@@ -169,7 +143,6 @@ const libraryEntries = [
     role: 'Cross-functional',
     type: 'Content',
     reusability: 'Personal',
-    status: 'In Review',
     contributor: 'Caitlin',
     requiredContext: 'Source asset, audience, channels, tone, CTA, and forbidden claims.',
     prompt: 'Repurpose the source asset into channel-specific outputs with clear audience fit, CTA, and format differences.',
@@ -181,7 +154,7 @@ const libraryEntries = [
     readTime: '80 sec',
     views: 15,
     copies: 4,
-    updated: 'Mar 21, 2026',
+    featured: false,
   },
   {
     id: 'wf-005',
@@ -190,798 +163,69 @@ const libraryEntries = [
     role: 'Cross-functional',
     type: 'Sales Insight',
     reusability: 'Team',
-    status: 'Draft',
-    contributor: 'Seed interview candidate',
+    contributor: 'Seed interview contributor',
     requiredContext: 'Call notes, segment, deal stage, and whether the source is internal or customer-facing.',
     prompt: 'Identify recurring objections, cluster them by type, and note what evidence is strong, weak, or anecdotal.',
     input: 'Eight notes from discovery and renewal calls across three accounts.',
-    output: 'Recurring themes: integration speed, proof of ROI, uncertainty on rollout ownership.',
+    output: 'Recurring themes: integration speed, proof of ROI, and uncertainty on rollout ownership.',
     notes: 'Useful for fast pattern recognition before writing a memo.',
     limitations: 'Should not be treated as a formal market study without validation.',
     failures: 'Too few calls, low-quality notes, and unclear segment labels.',
     readTime: '85 sec',
     views: 9,
     copies: 1,
-    updated: 'Mar 24, 2026',
+    featured: false,
   },
 ];
 
-const reviewQueue = [
-  {
-    title: 'Competitive Account Research Template',
-    contributor: 'Tim',
-    role: 'Leadership',
-    completeness: 86,
-    issue: 'Needs a clearer example output and a sharper limitation note.',
-    state: 'Needs edits',
-  },
-  {
-    title: 'Sales Call Objection Drill',
-    contributor: 'Seed interview #2',
-    role: 'Cross-functional',
-    completeness: 72,
-    issue: 'Required context is too thin. Workflow steps need to be separated.',
-    state: 'Needs edits',
-  },
-  {
-    title: 'Bug Triage Starter',
-    contributor: 'Engineering',
-    role: 'Engineering',
-    completeness: 91,
-    issue: 'Ready after minor cleanup.',
-    state: 'Ready to publish',
-  },
-];
-
-const seedPlan = [
-  {
-    title: 'Structured workflows already used by Ankur',
-    body: 'Start with one or two workflows that already have repeatable structure and clear business value.',
-    icon: 'spark',
-  },
-  {
-    title: 'One engineering-side contributor',
-    body: 'Add technically useful prompts and workflows that can show what strong context discipline looks like.',
-    icon: 'bolt',
-  },
-  {
-    title: 'Two or three follow-up interviews',
-    body: 'Use focused interviews to surface real workflow depth, not just raw prompts.',
-    icon: 'users',
-  },
-];
-
-const boundaries = [
-  {
-    include: 'Capture, organize, search, and reuse proven prompts and workflows.',
-    avoid: 'Trying to solve connected data access or security in v1.',
-  },
-  {
-    include: 'Descriptions, usage guidance, examples, and searchability.',
-    avoid: 'Building a prompt mixer, optimizer, or AI-generated prompt builder first.',
-  },
-  {
-    include: '15 to 25 high-quality reusable entries.',
-    avoid: 'Trying to standardize every workflow at once.',
-  },
-  {
-    include: 'A buildable concept with enough workflow depth for implementation.',
-    avoid: 'A full infrastructure rollout during the current semester window.',
-  },
-];
-
-const openQuestions = [
-  {
-    q: 'Where should v1 live?',
-    a: 'Notion, Google Docs, Google Sites, or a lightweight portal each changes searchability and contribution friction.',
-  },
-  {
-    q: 'Who is the engineering-side partner?',
-    a: 'Prompt collection, organization, and possible consolidation need a named partner on the engineering side.',
-  },
-  {
-    q: 'Who owns review?',
-    a: 'This does not need to be formal, but there does need to be a clear owner before entries go live.',
-  },
-  {
-    q: 'How strict is the boundary with Harish?',
-    a: 'v1 can stay at the workflow and prompt layer, or start preparing for future connected data access.',
-  },
-];
-
-const nextSteps = [
-  'Confirm the v1 concept direction.',
-  'Confirm the engineering-side partner.',
-  'Run two to three follow-up interviews focused on workflow depth and reusability.',
-  'Seed the library with 10 to 15 high-quality entries from early contributors.',
-  'Choose a hosting format and make v1 available internally.',
-];
-
-const roleOptions = ['All roles', 'Leadership', 'Engineering', 'Product', 'Cross-functional'];
-const typeOptions = ['All types', 'Meeting Prep', 'Debugging', 'Research', 'Content', 'Sales Insight'];
-const statusOptions = ['All status', 'Approved', 'In Review', 'Draft'];
+function Select({ value, onChange, options }) {
+  return (
+    <select className="select" value={value} onChange={(e) => onChange(e.target.value)}>
+      {options.map((option) => (
+        <option key={option}>{option}</option>
+      ))}
+    </select>
+  );
+}
 
 function Badge({ children, tone = 'slate' }) {
   return <span className={`badge badge-${tone}`}>{children}</span>;
 }
 
-function StatCard({ label, value, detail, icon }) {
+function MetricPill({ icon, title, body }) {
   return (
-    <div className="stat-card card">
-      <div className="stat-icon-wrap"><Icon name={icon} size={18} /></div>
+    <div className="metric-pill">
+      <div className="metric-pill-icon"><Icon name={icon} size={16} /></div>
       <div>
-        <div className="stat-value">{value}</div>
-        <div className="stat-label">{label}</div>
-        <div className="stat-detail">{detail}</div>
+        <div className="metric-pill-title">{title}</div>
+        <div className="metric-pill-body">{body}</div>
       </div>
     </div>
   );
 }
 
-function SectionTitle({ eyebrow, title, body, action }) {
+function FeatureCard({ entry, onOpen }) {
   return (
-    <div className="section-title-row">
-      <div>
-        {eyebrow ? <div className="eyebrow">{eyebrow}</div> : null}
-        <h2 className="section-title">{title}</h2>
-        {body ? <p className="section-body">{body}</p> : null}
+    <button className="feature-card" onClick={() => onOpen(entry.id)}>
+      <div className="feature-card-top">
+        <Badge tone={entry.reusability === 'Cross-company' ? 'green' : entry.reusability === 'Team' ? 'blue' : 'slate'}>{entry.reusability}</Badge>
+        <span className="inline-meta"><Icon name="clock" size={13} /> {entry.readTime}</span>
       </div>
-      {action ? <div className="section-action">{action}</div> : null}
-    </div>
+      <div className="feature-card-title">{entry.title}</div>
+      <div className="feature-card-body">{entry.useCase}</div>
+      <div className="feature-card-meta">
+        <span><Icon name="users" size={13} /> {entry.role}</span>
+        <span><Icon name="layers" size={13} /> {entry.type}</span>
+      </div>
+    </button>
   );
 }
 
-function FlowDiagram() {
-  const steps = [
-    ['Capture', 'Document the workflow with enough context to reuse it well.'],
-    ['Review', 'Check completeness, examples, guidance, and limitation notes.'],
-    ['Publish', 'Make the entry searchable by role, workflow type, and keyword.'],
-    ['Reuse', 'Let someone else copy, adapt, and learn without starting from zero.'],
-    ['Improve', 'Track what gets reused, changed, ignored, or corrected.'],
-  ];
-  return (
-    <div className="flow-wrap card">
-      {steps.map((step, index) => (
-        <React.Fragment key={step[0]}>
-          <div className="flow-step">
-            <div className="flow-step-number">0{index + 1}</div>
-            <div className="flow-step-title">{step[0]}</div>
-            <div className="flow-step-body">{step[1]}</div>
-          </div>
-          {index < steps.length - 1 ? <Icon name="arrowRight" size={18} style={{ color: '#7c8193' }} /> : null}
-        </React.Fragment>
-      ))}
-    </div>
-  );
-}
-
-function EntryAnatomy() {
-  return (
-    <div className="card anatomy-card">
-      <div className="anatomy-left">
-        <div className="mini-window">
-          <div className="mini-window-top">
-            <span />
-            <span />
-            <span />
-          </div>
-          <div className="anatomy-list">
-            {entryFields.map(([field, desc]) => (
-              <div className="anatomy-item" key={field}>
-                <div className="anatomy-item-title">{field}</div>
-                <div className="anatomy-item-body">{desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="anatomy-right">
-        <div className="eyebrow">Entry design</div>
-        <h3>Every entry needs more than a raw prompt.</h3>
-        <p>
-          A reusable internal asset needs workflow context. It should tell the user when to use it, what good output looks like, what usually goes wrong, and whether it is personal, team-level, or reusable across the company.
-        </p>
-        <div className="level-grid">
-          {workflowLevels.map((item) => (
-            <div className="level-card" key={item.level} style={{ borderColor: `${item.color}35` }}>
-              <div className="level-dot" style={{ background: item.color }} />
-              <div>
-                <div className="level-title">{item.level}</div>
-                <div className="level-desc">{item.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SubmissionFlow() {
-  const items = [
-    ['Title', 'What should this entry be called?'],
-    ['Problem solved', 'What job does it do?'],
-    ['Prompt or workflow', 'What should the user actually run?'],
-    ['One example', 'Show one concrete input and output.'],
-    ['What works well', 'When does this perform best?'],
-    ['What fails', 'Where does it usually need correction?'],
-    ['Who should use it', 'Role, team, or workflow type.'],
-    ['Reusability level', 'Personal, team, or cross-company.'],
-  ];
-  return (
-    <div className="card submit-flow-card">
-      <div className="submit-flow-header">
-        <div>
-          <div className="eyebrow">Contribution design</div>
-          <h3>Keep contribution light.</h3>
-          <p>If submission takes more than five to ten minutes, participation drops. The form should stay practical, short, and easy to finish in one pass.</p>
-        </div>
-        <Badge tone="blue">Target: 5–10 min</Badge>
-      </div>
-      <div className="submit-form-mock">
-        {items.map(([label, placeholder], idx) => (
-          <div className={`mock-row ${idx > 1 ? 'mock-row-half' : ''}`} key={label}>
-            <label>{label}</label>
-            <div className="mock-input">{placeholder}</div>
-          </div>
-        ))}
-      </div>
-      <div className="review-strip">
-        <div className="review-strip-pill"><Icon name="check" size={14} /> Review for completeness</div>
-        <div className="review-strip-pill"><Icon name="layers" size={14} /> Organize and tag</div>
-        <div className="review-strip-pill"><Icon name="search" size={14} /> Publish to shared portal</div>
-      </div>
-    </div>
-  );
-}
-
-function DevicePreview() {
-  return (
-    <div className="card device-card">
-      <SectionTitle
-        eyebrow="Responsive behavior"
-        title="Designed to work naturally on desktop, tablet, and mobile"
-        body="Navigation collapses, cards stack cleanly, filters wrap without breaking, and long prompt content moves into a readable detail panel instead of overflowing the screen."
-      />
-      <div className="device-grid">
-        <div className="device device-desktop">
-          <div className="device-label"><Icon name="desktop" size={16} /> Desktop</div>
-          <div className="device-screen desktop-screen">
-            <div className="ds-sidebar" />
-            <div className="ds-main">
-              <div className="ds-header" />
-              <div className="ds-rows">
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="device device-tablet">
-          <div className="device-label"><Icon name="tablet" size={16} /> Tablet</div>
-          <div className="device-screen tablet-screen">
-            <div className="ts-bar" />
-            <div className="ts-card" />
-            <div className="ts-card short" />
-          </div>
-        </div>
-        <div className="device device-phone">
-          <div className="device-label"><Icon name="phone" size={16} /> Mobile</div>
-          <div className="device-screen phone-screen">
-            <div className="ps-bar" />
-            <div className="ps-chip-row">
-              <span />
-              <span />
-            </div>
-            <div className="ps-card" />
-            <div className="ps-card short" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function BoundaryTable() {
-  return (
-    <div className="card boundary-card">
-      <SectionTitle
-        eyebrow="Scope boundary"
-        title="What v1 should do, and what it should not try to do yet"
-        body="v1 should stay intentionally small. It succeeds if it makes strong workflows easy to find and easy to reuse."
-      />
-      <div className="boundary-table">
-        <div className="boundary-head">Do now</div>
-        <div className="boundary-head">Do later</div>
-        {boundaries.map((row, i) => (
-          <React.Fragment key={i}>
-            <div className="boundary-cell boundary-yes"><Icon name="check" size={16} /> {row.include}</div>
-            <div className="boundary-cell boundary-no"><Icon name="warning" size={16} /> {row.avoid}</div>
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function AdoptionBoard() {
-  return (
-    <div className="adoption-grid">
-      <div className="card chart-card">
-        <SectionTitle
-          eyebrow="Why this, why now"
-          title="The issue is not adoption. It is compounding."
-          body="AI is already part of real work, especially in research, synthesis, writing, and coding. The gap is that usage is still fragmented, personal, and only lightly connected to shared systems."
-        />
-        <div className="baseline-bars">
-          <div className="baseline-row">
-            <div>Already using AI in real work</div>
-            <div className="bar-wrap"><span className="bar-fill full" /></div>
-            <strong>High</strong>
-          </div>
-          <div className="baseline-row">
-            <div>Shared discoverability</div>
-            <div className="bar-wrap"><span className="bar-fill low" /></div>
-            <strong>Low</strong>
-          </div>
-          <div className="baseline-row">
-            <div>Prompt quality consistency</div>
-            <div className="bar-wrap"><span className="bar-fill mid" /></div>
-            <strong>Uneven</strong>
-          </div>
-          <div className="baseline-row">
-            <div>Reusable team capability</div>
-            <div className="bar-wrap"><span className="bar-fill low2" /></div>
-            <strong>Weak</strong>
-          </div>
-        </div>
-      </div>
-      <div className="card chart-card">
-        <SectionTitle
-          eyebrow="What to watch"
-          title="Usage data should tell the team what is actually working."
-          body="Over time, the portal should show what gets reused, what gets modified, and what gets ignored."
-        />
-        <div className="signal-stack">
-          <div className="signal-row"><span>Searches leading to copies</span><strong>Healthy</strong></div>
-          <div className="signal-row"><span>Entries reused across roles</span><strong>Growing</strong></div>
-          <div className="signal-row"><span>Drafts stuck in review</span><strong>Risk</strong></div>
-          <div className="signal-row"><span>Low-completeness submissions</span><strong>Training signal</strong></div>
-          <div className="signal-row"><span>Entries ignored after publish</span><strong>Cleanup candidate</strong></div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function InternalAIWorkflowPromptPortalPrototypeV2() {
-  const [activeTab, setActiveTab] = useState('home');
-  const [search, setSearch] = useState('');
-  const [role, setRole] = useState('All roles');
-  const [type, setType] = useState('All types');
-  const [status, setStatus] = useState('All status');
-  const [selected, setSelected] = useState('wf-001');
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [copiedId, setCopiedId] = useState('');
-
-  const filteredEntries = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return libraryEntries.filter((entry) => {
-      const queryHit = !q || [entry.title, entry.useCase, entry.type, entry.role, entry.contributor].some((v) => v.toLowerCase().includes(q));
-      const roleHit = role === 'All roles' || entry.role === role;
-      const typeHit = type === 'All types' || entry.type === type;
-      const statusHit = status === 'All status' || entry.status === status;
-      return queryHit && roleHit && typeHit && statusHit;
-    });
-  }, [search, role, type, status]);
-
-  const selectedEntry = filteredEntries.find((item) => item.id === selected) || filteredEntries[0] || libraryEntries[0];
-
-  function handleCopy(text, id) {
-    try {
-      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-        navigator.clipboard.writeText(text);
-      }
-      setCopiedId(id);
-      setTimeout(() => setCopiedId(''), 1200);
-    } catch {
-      setCopiedId(id);
-      setTimeout(() => setCopiedId(''), 1200);
-    }
-  }
-
-  return (
-    <div className="portal-root">
-      <style>{styles}</style>
-      <div className="top-banner">
-        <div className="top-banner-left">
-          <Badge tone="green">v1 concept translated into platform form</Badge>
-          <span>A searchable internal system for capturing, organizing, reviewing, and reusing proven AI workflows.</span>
-        </div>
-        <div className="top-banner-right">
-          <span><Icon name="clock" size={14} /> Reader target: under 2 min per entry</span>
-          <span><Icon name="upload" size={14} /> Contribution target: 5–10 min</span>
-        </div>
-      </div>
-
-      <div className="portal-shell">
-        <aside className={`sidebar ${menuOpen ? 'sidebar-open' : ''}`}>
-          <div className="brand-block">
-            <div className="brand-mark"><Icon name="route" size={20} /></div>
-            <div>
-              <div className="brand-kicker">Internal AI Workflow and Prompt Portal</div>
-              <div className="brand-title">v1 Prototype</div>
-            </div>
-          </div>
-
-          <div className="nav-stack">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                className={`nav-btn ${activeTab === item.id ? 'nav-btn-active' : ''}`}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  setMenuOpen(false);
-                }}
-              >
-                <Icon name={item.icon} size={17} />
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="sidebar-card card">
-            <div className="sidebar-card-title">Design guardrails</div>
-            <ul className="compact-list">
-              <li>Not a dump of raw prompts</li>
-              <li>Every entry needs guidance and examples</li>
-              <li>Submission must stay light</li>
-              <li>v1 stays small and searchable</li>
-            </ul>
-          </div>
-
-          <div className="sidebar-card card">
-            <div className="sidebar-card-title">Key numbers</div>
-            <div className="sidebar-mini-metrics">
-              {metrics.slice(0, 3).map((item) => (
-                <div key={item.label} className="mini-metric">
-                  <strong>{item.value}</strong>
-                  <span>{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        <main className="main-shell">
-          <header className="hero-header card">
-            <div className="hero-copy">
-              <div className="hero-eyebrow">March 2026</div>
-              <h1>Make strong AI workflows easier to find, use, and improve.</h1>
-              <p>
-                This prototype turns the v1 concept into a user-facing internal platform. It is built to help people discover proven workflows quickly, understand when they work, and contribute better examples without creating heavy process.
-              </p>
-              <div className="hero-actions">
-                <button className="primary-btn" onClick={() => setActiveTab('library')}><Icon name="search" size={16} /> Browse library</button>
-                <button className="secondary-btn" onClick={() => setActiveTab('contribute')}><Icon name="plus" size={16} /> Contribute workflow</button>
-              </div>
-            </div>
-            <div className="hero-panel">
-              <div className="hero-panel-grid">
-                {metrics.map((item, index) => (
-                  <StatCard key={item.label} label={item.label} value={item.value} detail={item.detail} icon={['database','clock','bolt','layers'][index]} />
-                ))}
-              </div>
-            </div>
-          </header>
-
-          <div className="mobile-nav-toggle-row">
-            <button className="secondary-btn mobile-only" onClick={() => setMenuOpen((v) => !v)}>
-              <Icon name="grid" size={16} /> {menuOpen ? 'Hide sections' : 'Show sections'}
-            </button>
-          </div>
-
-          {activeTab === 'home' && (
-            <div className="page-stack">
-              <section className="card">
-                <SectionTitle
-                  eyebrow="Problem statement"
-                  title="Useful AI workflows already exist inside the company, but they do not compound well."
-                  body="The goal of v1 is not to prove that AI matters. It is to give the team a shared system for capturing, organizing, searching, and reusing strong prompts and workflows with enough context to be useful to someone else."
-                />
-                <div className="problem-grid">
-                  {problemCards.map((card) => (
-                    <div className="problem-card" key={card.title}>
-                      <div className="problem-icon"><Icon name={card.icon} size={18} /></div>
-                      <h3>{card.title}</h3>
-                      <p>{card.body}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <FlowDiagram />
-              <EntryAnatomy />
-              <SubmissionFlow />
-
-              <section className="card">
-                <SectionTitle
-                  eyebrow="How v1 should be seeded"
-                  title="Do not launch an empty portal."
-                  body="An empty library does not teach anyone how to use the system. Seed v1 with a small number of strong examples from people already using AI in a repeatable way."
-                />
-                <div className="seed-grid">
-                  {seedPlan.map((item) => (
-                    <div className="seed-card" key={item.title}>
-                      <div className="seed-icon"><Icon name={item.icon} size={18} /></div>
-                      <h3>{item.title}</h3>
-                      <p>{item.body}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <BoundaryTable />
-
-              <section className="card">
-                <SectionTitle
-                  eyebrow="Open questions for alignment"
-                  title="The concept is usable, but a few choices still shape the release."
-                  body="These decisions affect searchability, contribution friction, and ownership."
-                />
-                <div className="question-grid">
-                  {openQuestions.map((item) => (
-                    <div className="question-card" key={item.q}>
-                      <div className="question-title"><Icon name="help" size={16} /> {item.q}</div>
-                      <p>{item.a}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="card">
-                <SectionTitle
-                  eyebrow="Next steps"
-                  title="What should happen after concept alignment"
-                  body="Given the remaining semester time, the right deliverable is a clear concept and enough workflow depth to make it buildable."
-                />
-                <ol className="step-list">
-                  {nextSteps.map((step) => (
-                    <li key={step}>{step}</li>
-                  ))}
-                </ol>
-              </section>
-
-              <DevicePreview />
-            </div>
-          )}
-
-          {activeTab === 'library' && (
-            <div className="page-stack">
-              <section className="card">
-                <SectionTitle
-                  eyebrow="Library"
-                  title="Find a relevant workflow in under two minutes"
-                  body="A user should be able to search by role, workflow type, or keyword, then understand what the workflow does, what context it needs, and how to adapt it without contacting the original contributor."
-                />
-                <div className="filter-bar">
-                  <div className="search-box">
-                    <Icon name="search" size={16} />
-                    <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by title, use case, workflow type, or contributor" />
-                  </div>
-                  <div className="filter-group">
-                    <Select value={role} onChange={setRole} options={roleOptions} />
-                    <Select value={type} onChange={setType} options={typeOptions} />
-                    <Select value={status} onChange={setStatus} options={statusOptions} />
-                  </div>
-                </div>
-              </section>
-
-              <div className="library-layout">
-                <div className="library-list card">
-                  <div className="list-top-row">
-                    <div className="list-count">{filteredEntries.length} results</div>
-                    <Badge tone="slate"><Icon name="clock" size={14} /> under 2 min each</Badge>
-                  </div>
-                  <div className="entry-list">
-                    {filteredEntries.map((entry) => (
-                      <button key={entry.id} className={`entry-card ${selectedEntry?.id === entry.id ? 'entry-card-active' : ''}`} onClick={() => setSelected(entry.id)}>
-                        <div className="entry-card-top">
-                          <div>
-                            <div className="entry-title">{entry.title}</div>
-                            <div className="entry-sub">{entry.useCase}</div>
-                          </div>
-                          <Badge tone={entry.status === 'Approved' ? 'green' : entry.status === 'In Review' ? 'amber' : 'slate'}>{entry.status}</Badge>
-                        </div>
-                        <div className="entry-meta-row">
-                          <span><Icon name="users" size={14} /> {entry.role}</span>
-                          <span><Icon name="layers" size={14} /> {entry.type}</span>
-                          <span><Icon name="clock" size={14} /> {entry.readTime}</span>
-                        </div>
-                        <div className="entry-chip-row">
-                          <span className="chip">{entry.reusability}</span>
-                          <span className="chip">{entry.contributor}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="entry-detail card">
-                  {selectedEntry ? (
-                    <>
-                      <div className="detail-head">
-                        <div>
-                          <div className="detail-kicker">{selectedEntry.type} · {selectedEntry.role}</div>
-                          <h2>{selectedEntry.title}</h2>
-                          <p>{selectedEntry.useCase}</p>
-                        </div>
-                        <div className="detail-head-actions">
-                          <Badge tone={selectedEntry.status === 'Approved' ? 'green' : selectedEntry.status === 'In Review' ? 'amber' : 'slate'}>{selectedEntry.status}</Badge>
-                          <button className="icon-btn" onClick={() => handleCopy(selectedEntry.prompt, selectedEntry.id)}>
-                            <Icon name="copy" size={15} /> {copiedId === selectedEntry.id ? 'Copied' : 'Copy prompt'}
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="detail-stat-row">
-                        <span><Icon name="eye" size={14} /> {selectedEntry.views} views</span>
-                        <span><Icon name="copy" size={14} /> {selectedEntry.copies} copies</span>
-                        <span><Icon name="clock" size={14} /> Updated {selectedEntry.updated}</span>
-                        <span><Icon name="users" size={14} /> {selectedEntry.contributor}</span>
-                      </div>
-
-                      <div className="detail-grid">
-                        <InfoCard title="Required context" icon="file" body={selectedEntry.requiredContext} />
-                        <InfoCard title="Usage notes" icon="spark" body={selectedEntry.notes} />
-                        <InfoCard title="Known limitations" icon="warning" body={selectedEntry.limitations} />
-                        <InfoCard title="Typical failure modes" icon="help" body={selectedEntry.failures} />
-                      </div>
-
-                      <div className="code-block-group">
-                        <CodeBlock title="Prompt or workflow" text={selectedEntry.prompt} />
-                        <div className="two-col-code">
-                          <CodeBlock title="Example input" text={selectedEntry.input} />
-                          <CodeBlock title="Example output" text={selectedEntry.output} />
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div>No result found.</div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'contribute' && (
-            <div className="page-stack">
-              <section className="card contribute-hero">
-                <SectionTitle
-                  eyebrow="Contribute"
-                  title="Share a workflow without creating heavy process"
-                  body="The goal is not perfect documentation. It is enough context for another person to use the workflow well and enough review structure to keep quality high."
-                  action={<Badge tone="blue">Estimated time: 5–10 min</Badge>}
-                />
-                <div className="contribute-layout">
-                  <div className="submit-panel">
-                    <FormBlock label="Title" value="Win/Loss Interview Synthesis" />
-                    <FormBlock label="What problem does it solve?" value="Turn raw interview notes into a clean, decision-oriented synthesis for the GTM team." large />
-                    <FormBlock label="Prompt or workflow" value="Analyze the interview notes, separate repeated signal from isolated comments, identify top purchase drivers, blockers, and implications for messaging." large />
-                    <div className="form-two-col">
-                      <FormBlock label="One example" value="Input: 6 interview transcripts. Output: top themes, tensions, quotes to verify, and messaging implications." large />
-                      <FormBlock label="Who should use it?" value="Product, GTM, leadership" />
-                    </div>
-                    <div className="form-two-col">
-                      <FormBlock label="What works well" value="Works best when each interview has clear labels and quotes." large />
-                      <FormBlock label="What fails or needs correction" value="Breaks down when notes are incomplete or the objective is too broad." large />
-                    </div>
-                    <div className="form-two-col">
-                      <FormBlock label="Reusability level" value="Team reusable" />
-                      <FormBlock label="Contributor" value="Your name" />
-                    </div>
-                    <div className="hero-actions">
-                      <button className="primary-btn"><Icon name="upload" size={16} /> Submit for review</button>
-                      <button className="secondary-btn"><Icon name="file" size={16} /> Save as draft</button>
-                    </div>
-                  </div>
-                  <div className="contribute-side">
-                    <div className="card callout-box">
-                      <div className="callout-title"><Icon name="check" size={16} /> What makes a good submission</div>
-                      <ul className="compact-list">
-                        <li>Explain the job to be done, not only the prompt text.</li>
-                        <li>Include one real example so the next user can see the pattern.</li>
-                        <li>Be honest about failure modes. That saves time later.</li>
-                        <li>Choose the smallest useful reusability level.</li>
-                      </ul>
-                    </div>
-                    <div className="card callout-box">
-                      <div className="callout-title"><Icon name="warning" size={16} /> What to avoid</div>
-                      <ul className="compact-list">
-                        <li>Uploading a prompt with no context or example.</li>
-                        <li>Claiming it works broadly when it is still personal.</li>
-                        <li>Turning the form into a long narrative.</li>
-                        <li>Skipping known limitations.</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </div>
-          )}
-
-          {activeTab === 'review' && (
-            <div className="page-stack">
-              <section className="card">
-                <SectionTitle
-                  eyebrow="Review queue"
-                  title="Review does not need to be heavy. It only needs to protect usefulness."
-                  body="Before an entry goes live, someone should make sure it includes enough context to help a person who did not write it."
-                />
-                <div className="review-grid">
-                  {reviewQueue.map((item) => (
-                    <div className="review-card" key={item.title}>
-                      <div className="review-card-top">
-                        <div>
-                          <h3>{item.title}</h3>
-                          <p>{item.contributor} · {item.role}</p>
-                        </div>
-                        <Badge tone={item.state === 'Ready to publish' ? 'green' : 'amber'}>{item.state}</Badge>
-                      </div>
-                      <div className="review-progress-row">
-                        <div className="review-progress-label">Completeness</div>
-                        <div className="review-progress-bar"><span style={{ width: `${item.completeness}%` }} /></div>
-                        <strong>{item.completeness}%</strong>
-                      </div>
-                      <div className="review-issue"><Icon name="warning" size={14} /> {item.issue}</div>
-                      <div className="review-actions">
-                        <button className="secondary-btn small-btn">Request edits</button>
-                        <button className="primary-btn small-btn">Approve</button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </div>
-          )}
-
-          {activeTab === 'adoption' && (
-            <div className="page-stack">
-              <AdoptionBoard />
-              <section className="card">
-                <SectionTitle
-                  eyebrow="Interpretation"
-                  title="The main value is not only better prompts. It is a better shared system."
-                  body="A shared library can improve prompt quality, reduce re-prompting, and multiply time savings across the team. That only happens if the system captures enough context, stays easy to contribute to, and makes useful entries easy to discover."
-                />
-              </section>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
-  );
-}
-
-function Select({ value, onChange, options }) {
-  return (
-    <label className="select-wrap">
-      <Icon name="filter" size={14} />
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
-        {options.map((option) => (
-          <option key={option} value={option}>{option}</option>
-        ))}
-      </select>
-    </label>
-  );
-}
-
-function InfoCard({ title, body, icon }) {
+function InfoCard({ icon, title, body }) {
   return (
     <div className="info-card">
       <div className="info-card-title"><Icon name={icon} size={15} /> {title}</div>
-      <div className="info-card-body">{body}</div>
+      <p>{body}</p>
     </div>
   );
 }
@@ -995,275 +239,611 @@ function CodeBlock({ title, text }) {
   );
 }
 
-function FormBlock({ label, value, large }) {
+function FormField({ label, placeholder, large }) {
   return (
-    <div className={`form-block ${large ? 'form-block-large' : ''}`}>
+    <div className={`form-field ${large ? 'form-field-large' : ''}`}>
       <label>{label}</label>
-      <div className="form-field">{value}</div>
+      <div className="mock-input">{placeholder}</div>
     </div>
   );
 }
 
-const styles = `
-  :root {
-    color-scheme: light;
-    --bg: #f4f6fb;
-    --panel: #ffffff;
-    --panel-2: #f7f9fd;
-    --line: #d8deec;
-    --line-2: #e6eaf3;
-    --text: #111827;
-    --muted: #5a6475;
-    --soft: #7b8597;
-    --blue: #2355d8;
-    --blue-2: #e8efff;
-    --green: #0f8f68;
-    --green-2: #e6f7f1;
-    --amber: #b7791f;
-    --amber-2: #fff4df;
-    --shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
-    --radius-xl: 24px;
-    --radius-lg: 18px;
-    --radius-md: 14px;
-    --radius-sm: 10px;
+export default function InternalAIWorkflowPromptPortalPlatformV3EndUser() {
+  const [activeTab, setActiveTab] = useState('discover');
+  const [search, setSearch] = useState('');
+  const [role, setRole] = useState('All roles');
+  const [type, setType] = useState('All types');
+  const [level, setLevel] = useState('All levels');
+  const [selectedId, setSelectedId] = useState(entries[0].id);
+  const [copiedId, setCopiedId] = useState(null);
+
+  const filteredEntries = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return entries.filter((entry) => {
+      const matchesSearch = !q || [entry.title, entry.useCase, entry.role, entry.type, entry.contributor].join(' ').toLowerCase().includes(q);
+      const matchesRole = role === 'All roles' || entry.role === role;
+      const matchesType = type === 'All types' || entry.type === type;
+      const matchesLevel = level === 'All levels' || entry.reusability === level;
+      return matchesSearch && matchesRole && matchesType && matchesLevel;
+    });
+  }, [search, role, type, level]);
+
+  const selectedEntry = filteredEntries.find((entry) => entry.id === selectedId) || filteredEntries[0] || null;
+  const featured = entries.filter((entry) => entry.featured);
+
+  async function handleCopy() {
+    if (!selectedEntry) return;
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(selectedEntry.prompt);
+        setCopiedId(selectedEntry.id);
+        setTimeout(() => setCopiedId(null), 1400);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  * { box-sizing: border-box; }
-  html, body, #root { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-  button, input, select { font: inherit; }
-  .portal-root { min-height: 100vh; background: radial-gradient(circle at top left, #eef3ff 0, #f4f6fb 38%, #f4f6fb 100%); }
-  .top-banner {
-    display: flex; justify-content: space-between; gap: 16px; padding: 14px 22px; border-bottom: 1px solid var(--line);
-    background: rgba(255,255,255,0.78); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 20;
-  }
-  .top-banner-left, .top-banner-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; color: var(--muted); font-size: 13px; }
-  .top-banner-right span, .top-banner-left span { display: inline-flex; align-items: center; gap: 6px; }
-  .portal-shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 24px; padding: 24px; max-width: 1600px; margin: 0 auto; }
-  .sidebar { display: flex; flex-direction: column; gap: 16px; }
-  .card {
-    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,255,0.98));
-    border: 1px solid var(--line-2); box-shadow: var(--shadow); border-radius: var(--radius-xl);
-  }
-  .brand-block { display: flex; gap: 12px; align-items: center; padding: 20px; background: var(--panel); border: 1px solid var(--line-2); border-radius: var(--radius-xl); box-shadow: var(--shadow); }
-  .brand-mark { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(135deg, #2355d8, #6d8dff); color: white; }
-  .brand-kicker { color: var(--muted); font-size: 12px; }
-  .brand-title { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
-  .nav-stack { display: grid; gap: 8px; }
-  .nav-btn {
-    display: flex; align-items: center; gap: 10px; width: 100%; border: 1px solid transparent; background: transparent;
-    padding: 12px 14px; border-radius: 14px; color: var(--muted); cursor: pointer; text-align: left;
-  }
-  .nav-btn:hover { background: rgba(255,255,255,0.7); border-color: var(--line); color: var(--text); }
-  .nav-btn-active { background: white; color: var(--text); border-color: #c9d5fb; box-shadow: inset 0 0 0 1px #eef3ff; }
-  .sidebar-card { padding: 18px; }
-  .sidebar-card-title { font-weight: 700; margin-bottom: 10px; }
-  .compact-list { margin: 0; padding-left: 18px; color: var(--muted); display: grid; gap: 8px; }
-  .sidebar-mini-metrics { display: grid; gap: 12px; }
-  .mini-metric { display: grid; gap: 2px; }
-  .mini-metric strong { font-size: 18px; }
-  .mini-metric span { font-size: 13px; color: var(--muted); }
-  .main-shell { display: grid; gap: 18px; min-width: 0; }
-  .hero-header { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(380px, 0.95fr); gap: 20px; padding: 28px; overflow: hidden; }
-  .hero-copy { display: grid; gap: 16px; align-content: start; }
-  .hero-eyebrow, .eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--blue); }
-  .hero-copy h1 { margin: 0; font-size: clamp(30px, 4vw, 50px); letter-spacing: -0.04em; line-height: 1.02; max-width: 14ch; }
-  .hero-copy p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.7; max-width: 68ch; }
-  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-  .primary-btn, .secondary-btn, .icon-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; padding: 11px 14px;
-    border: 1px solid transparent; cursor: pointer; font-weight: 600;
-  }
-  .primary-btn { background: var(--blue); color: white; }
-  .primary-btn:hover { filter: brightness(1.03); }
-  .secondary-btn { background: white; color: var(--text); border-color: var(--line); }
-  .secondary-btn:hover, .icon-btn:hover { background: #f8fbff; }
-  .icon-btn { background: white; border-color: var(--line); color: var(--text); }
-  .hero-panel-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; height: 100%; }
-  .stat-card { padding: 16px; display: grid; grid-template-columns: 38px minmax(0,1fr); gap: 12px; }
-  .stat-icon-wrap { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: var(--panel-2); color: var(--blue); }
-  .stat-value { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
-  .stat-label { font-size: 13px; font-weight: 700; }
-  .stat-detail { font-size: 12px; color: var(--muted); line-height: 1.45; margin-top: 2px; }
-  .mobile-nav-toggle-row { display: none; }
-  .page-stack { display: grid; gap: 18px; }
-  .section-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
-  .section-title { margin: 6px 0 8px; font-size: clamp(22px, 2.2vw, 34px); letter-spacing: -0.03em; line-height: 1.1; }
-  .section-body { margin: 0; color: var(--muted); line-height: 1.7; max-width: 78ch; }
-  .problem-grid, .seed-grid, .question-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
-  .problem-card, .seed-card, .question-card { padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,0.65); }
-  .problem-card h3, .seed-card h3 { margin: 12px 0 8px; font-size: 17px; letter-spacing: -0.02em; }
-  .problem-card p, .seed-card p, .question-card p { margin: 0; color: var(--muted); line-height: 1.65; }
-  .problem-icon, .seed-icon { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: #eef3ff; color: var(--blue); }
-  .question-title { display: flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 8px; }
-  .flow-wrap { padding: 20px; display: flex; gap: 12px; align-items: center; overflow-x: auto; }
-  .flow-step { min-width: 210px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,0.74); }
-  .flow-step-number { font-size: 12px; font-weight: 800; color: var(--blue); letter-spacing: .08em; }
-  .flow-step-title { margin-top: 10px; font-size: 16px; font-weight: 700; }
-  .flow-step-body { margin-top: 6px; color: var(--muted); line-height: 1.55; font-size: 14px; }
-  .anatomy-card { padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 0.9fr); gap: 20px; }
-  .mini-window { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: white; }
-  .mini-window-top { display: flex; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); background: #f8faff; }
-  .mini-window-top span { width: 10px; height: 10px; border-radius: 999px; background: #ced7ea; }
-  .anatomy-list { padding: 14px; display: grid; gap: 10px; }
-  .anatomy-item { padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: #fbfcff; }
-  .anatomy-item-title { font-weight: 700; margin-bottom: 4px; }
-  .anatomy-item-body { font-size: 14px; color: var(--muted); line-height: 1.55; }
-  .anatomy-right h3 { margin: 6px 0 10px; font-size: 28px; letter-spacing: -0.03em; }
-  .anatomy-right p { margin: 0; color: var(--muted); line-height: 1.75; }
-  .level-grid { display: grid; gap: 12px; margin-top: 18px; }
-  .level-card { border: 1px solid var(--line); border-radius: 16px; padding: 14px; background: white; display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 12px; }
-  .level-dot { width: 12px; height: 12px; border-radius: 999px; margin-top: 5px; }
-  .level-title { font-weight: 700; }
-  .level-desc { color: var(--muted); line-height: 1.55; font-size: 14px; margin-top: 4px; }
-  .submit-flow-card { padding: 24px; }
-  .submit-flow-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
-  .submit-flow-header h3 { margin: 6px 0 10px; font-size: 28px; letter-spacing: -0.03em; }
-  .submit-flow-header p { margin: 0; color: var(--muted); line-height: 1.7; max-width: 65ch; }
-  .submit-form-mock { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
-  .mock-row { display: grid; gap: 8px; }
-  .mock-row label { font-weight: 700; font-size: 14px; }
-  .mock-input { min-height: 48px; padding: 14px; border-radius: 14px; background: white; border: 1px solid var(--line); color: var(--soft); line-height: 1.5; }
-  .mock-row-half:nth-child(odd) { }
-  .review-strip { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-  .review-strip-pill { display: inline-flex; align-items: center; gap: 8px; background: #f8faff; color: var(--muted); border: 1px solid var(--line); padding: 10px 12px; border-radius: 999px; }
-  .boundary-card, .device-card { padding: 24px; }
-  .boundary-table { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
-  .boundary-head { padding: 14px 16px; font-weight: 800; background: #f5f8ff; border-bottom: 1px solid var(--line); }
-  .boundary-head:nth-child(2) { background: #fff8ec; }
-  .boundary-cell { padding: 16px; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; }
-  .boundary-yes { background: rgba(244,248,255,.6); }
-  .boundary-no { background: rgba(255,250,240,.8); }
-  .device-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
-  .device { border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,0.72); padding: 16px; }
-  .device-label { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 12px; }
-  .device-screen { background: white; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; height: 220px; }
-  .desktop-screen { display: grid; grid-template-columns: 66px 1fr; }
-  .ds-sidebar { background: #f4f7ff; border-right: 1px solid var(--line); }
-  .ds-main { padding: 12px; display: grid; gap: 10px; }
-  .ds-header, .ts-bar, .ps-bar { height: 32px; border-radius: 10px; background: #eef3ff; }
-  .ds-rows { display: grid; gap: 8px; }
-  .ds-rows span, .ts-card, .ps-card { height: 52px; border-radius: 12px; background: #f7f9fd; border: 1px solid var(--line); display: block; }
-  .tablet-screen, .phone-screen { padding: 12px; display: grid; gap: 10px; }
-  .ts-card.short, .ps-card.short { height: 38px; }
-  .ps-chip-row { display: flex; gap: 8px; }
-  .ps-chip-row span { width: 64px; height: 24px; border-radius: 999px; background: #eef3ff; display: block; }
-  .filter-bar { display: grid; gap: 14px; }
-  .search-box { display: flex; align-items: center; gap: 10px; background: white; border: 1px solid var(--line); border-radius: 14px; padding: 0 14px; min-height: 50px; }
-  .search-box input { flex: 1; border: 0; outline: none; background: transparent; color: var(--text); }
-  .filter-group { display: flex; gap: 10px; flex-wrap: wrap; }
-  .select-wrap { display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid var(--line); border-radius: 12px; padding: 0 12px; min-height: 44px; color: var(--muted); }
-  .select-wrap select { border: 0; background: transparent; outline: none; color: var(--text); padding-right: 10px; }
-  .library-layout { display: grid; grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.35fr); gap: 18px; min-width: 0; }
-  .library-list, .entry-detail { padding: 18px; min-width: 0; }
-  .list-top-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 14px; }
-  .list-count { font-weight: 700; }
-  .entry-list { display: grid; gap: 12px; }
-  .entry-card {
-    width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 18px; background: white; padding: 16px; cursor: pointer;
-    display: grid; gap: 12px; color: var(--text);
-  }
-  .entry-card:hover { border-color: #c9d5fb; box-shadow: inset 0 0 0 1px #eef3ff; }
-  .entry-card-active { border-color: #94b0ff; box-shadow: inset 0 0 0 1px #c8d7ff; background: #fbfdff; }
-  .entry-card-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
-  .entry-title { font-weight: 800; letter-spacing: -0.02em; }
-  .entry-sub { color: var(--muted); font-size: 14px; line-height: 1.55; margin-top: 4px; }
-  .entry-meta-row, .entry-chip-row, .detail-stat-row { display: flex; flex-wrap: wrap; gap: 8px 14px; color: var(--muted); font-size: 13px; }
-  .entry-meta-row span, .detail-stat-row span { display: inline-flex; align-items: center; gap: 6px; }
-  .chip { display: inline-flex; align-items: center; background: #f5f8ff; border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; font-size: 12px; }
-  .entry-detail { display: grid; gap: 18px; }
-  .detail-head { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
-  .detail-kicker { color: var(--blue); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
-  .detail-head h2 { margin: 6px 0 8px; font-size: clamp(24px, 2.6vw, 36px); line-height: 1.06; letter-spacing: -0.03em; }
-  .detail-head p { margin: 0; color: var(--muted); line-height: 1.7; max-width: 64ch; }
-  .detail-head-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
-  .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
-  .info-card { border: 1px solid var(--line); border-radius: 16px; background: #fbfcff; padding: 14px; }
-  .info-card-title { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 8px; }
-  .info-card-body { color: var(--muted); line-height: 1.65; font-size: 14px; }
-  .code-block-group { display: grid; gap: 12px; }
-  .code-block { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #101828; }
-  .code-title { padding: 12px 14px; color: #dce6ff; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.03); }
-  .code-block pre {
-    margin: 0; padding: 16px; color: #eef3ff; white-space: pre-wrap; word-break: break-word; line-height: 1.7; font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  }
-  .two-col-code { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
-  .contribute-hero { padding: 24px; }
-  .contribute-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.8fr); gap: 18px; }
-  .submit-panel { display: grid; gap: 12px; }
-  .form-block { display: grid; gap: 8px; }
-  .form-block label { font-weight: 700; font-size: 14px; }
-  .form-field {
-    min-height: 48px; background: white; border: 1px solid var(--line); border-radius: 14px; padding: 14px; color: var(--text); line-height: 1.6;
-  }
-  .form-block-large .form-field { min-height: 96px; }
-  .form-two-col { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
-  .contribute-side { display: grid; gap: 12px; }
-  .callout-box { padding: 18px; }
-  .callout-title { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 10px; }
-  .review-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
-  .review-card { border: 1px solid var(--line); border-radius: 18px; background: white; padding: 18px; display: grid; gap: 14px; }
-  .review-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .review-card h3 { margin: 0 0 6px; font-size: 18px; letter-spacing: -0.02em; }
-  .review-card p { margin: 0; color: var(--muted); }
-  .review-progress-row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
-  .review-progress-label { font-size: 13px; color: var(--muted); }
-  .review-progress-bar { height: 10px; border-radius: 999px; overflow: hidden; background: #eef2fb; border: 1px solid var(--line); }
-  .review-progress-bar span { height: 100%; display: block; background: linear-gradient(90deg, #2355d8, #6e8fff); }
-  .review-issue { display: inline-flex; gap: 8px; align-items: flex-start; color: var(--muted); line-height: 1.6; }
-  .review-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-  .small-btn { padding: 10px 12px; }
-  .adoption-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
-  .chart-card { padding: 24px; }
-  .baseline-bars { display: grid; gap: 14px; margin-top: 6px; }
-  .baseline-row { display: grid; grid-template-columns: 180px 1fr auto; gap: 12px; align-items: center; }
-  .baseline-row div:first-child { font-size: 14px; color: var(--muted); }
-  .bar-wrap { height: 14px; border-radius: 999px; overflow: hidden; background: #eef2fb; border: 1px solid var(--line); }
-  .bar-fill { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #2355d8, #6e8fff); }
-  .bar-fill.full { width: 92%; }
-  .bar-fill.low { width: 24%; }
-  .bar-fill.mid { width: 46%; }
-  .bar-fill.low2 { width: 32%; }
-  .signal-stack { display: grid; gap: 10px; }
-  .signal-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,0.72); }
-  .signal-row span { color: var(--muted); }
-  .step-list { margin: 0; padding-left: 24px; display: grid; gap: 12px; line-height: 1.7; }
-  .badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; border: 1px solid transparent; white-space: nowrap; }
-  .badge-slate { background: #f5f7fb; color: #4d586b; border-color: var(--line); }
-  .badge-blue { background: var(--blue-2); color: var(--blue); border-color: #d4defd; }
-  .badge-green { background: var(--green-2); color: var(--green); border-color: #c7ebdd; }
-  .badge-amber { background: var(--amber-2); color: var(--amber); border-color: #f0ddb8; }
-  .mobile-only { display: none; }
-
-  @media (max-width: 1180px) {
-    .portal-shell { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .sidebar.sidebar-open { display: flex; }
-    .mobile-nav-toggle-row { display: block; }
-    .mobile-only { display: inline-flex; }
-    .hero-header { grid-template-columns: 1fr; }
-    .problem-grid, .seed-grid, .question-grid, .review-grid, .adoption-grid, .device-grid, .contribute-layout, .anatomy-card, .library-layout { grid-template-columns: 1fr; }
+  function openEntry(id) {
+    setSelectedId(id);
+    setActiveTab('library');
   }
 
-  @media (max-width: 900px) {
-    .top-banner { padding: 12px 14px; }
-    .portal-shell { padding: 14px; gap: 14px; }
-    .hero-header, .card, .boundary-card, .device-card, .contribute-hero, .chart-card, .submit-flow-card { padding: 18px; }
-    .hero-panel-grid, .submit-form-mock, .detail-grid, .two-col-code, .form-two-col { grid-template-columns: 1fr; }
-    .baseline-row { grid-template-columns: 1fr; }
-    .section-title-row, .submit-flow-header, .detail-head { flex-direction: column; }
-    .detail-head-actions { justify-content: flex-start; }
-    .boundary-table { grid-template-columns: 1fr; }
-    .boundary-head:nth-child(2) { border-top: 1px solid var(--line); }
-  }
+  return (
+    <div className="portal-shell">
+      <style>{`
+        :root {
+          --bg: #f5f7fb;
+          --surface: rgba(255,255,255,0.84);
+          --surface-solid: #ffffff;
+          --line: #dfe5f0;
+          --text: #122033;
+          --muted: #5f6b7e;
+          --muted-2: #7a8697;
+          --blue: #2355d8;
+          --blue-soft: #eff4ff;
+          --green: #15805f;
+          --green-soft: #eef9f5;
+          --amber: #b66a08;
+          --amber-soft: #fff5e7;
+          --shadow: 0 20px 50px rgba(20, 32, 58, 0.08);
+          --radius-xl: 28px;
+          --radius-lg: 22px;
+          --radius-md: 16px;
+          --radius-sm: 12px;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: radial-gradient(circle at top left, #eef4ff 0, #f7f9fc 40%, #f4f6fa 100%); }
+        button, input, select { font: inherit; }
+        .portal-shell { min-height: 100vh; padding: 20px; }
+        .portal-frame { max-width: 1450px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.56); backdrop-filter: blur(16px); border-radius: 34px; box-shadow: var(--shadow); overflow: hidden; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 22px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.72); position: sticky; top: 0; z-index: 10; }
+        .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .brand-badge { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(135deg, #eef3ff, #ffffff); border: 1px solid #dde5f4; color: var(--blue); box-shadow: inset 0 1px 0 rgba(255,255,255,0.7); }
+        .brand-copy { min-width: 0; }
+        .brand-title { font-size: 0.96rem; font-weight: 700; letter-spacing: -0.01em; }
+        .brand-subtitle { font-size: 0.82rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .topbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .top-search { display: flex; align-items: center; gap: 10px; min-width: 280px; padding: 12px 14px; border: 1px solid var(--line); background: #fff; border-radius: 999px; color: var(--muted); }
+        .top-search input { border: 0; outline: 0; background: transparent; width: 100%; color: var(--text); }
+        .nav-pills { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .nav-pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: rgba(255,255,255,0.9); color: var(--muted); border-radius: 999px; padding: 10px 14px; cursor: pointer; transition: 160ms ease; }
+        .nav-pill:hover { border-color: #c9d6f6; color: var(--text); }
+        .nav-pill.active { background: #16253d; border-color: #16253d; color: #fff; }
+        .page { padding: 28px; }
+        .stack { display: grid; gap: 20px; }
+        .hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr); gap: 20px; }
+        .card { background: var(--surface-solid); border: 1px solid var(--line); border-radius: var(--radius-xl); box-shadow: 0 14px 32px rgba(17, 31, 55, 0.05); }
+        .hero-main { padding: 32px; position: relative; overflow: hidden; }
+        .hero-main::after { content: ''; position: absolute; inset: auto -80px -120px auto; width: 260px; height: 260px; background: radial-gradient(circle, rgba(35,85,216,0.10), rgba(35,85,216,0)); pointer-events: none; }
+        .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); }
+        .hero h1 { margin: 14px 0 10px; font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.03; letter-spacing: -0.05em; max-width: 9.5ch; }
+        .hero p { margin: 0; max-width: 58ch; color: var(--muted); line-height: 1.72; font-size: 1rem; }
+        .hero-cta { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .primary-btn, .secondary-btn, .icon-btn { border: 0; cursor: pointer; transition: 160ms ease; }
+        .primary-btn { display: inline-flex; align-items: center; gap: 10px; background: #16253d; color: #fff; padding: 13px 18px; border-radius: 14px; box-shadow: 0 12px 24px rgba(22, 37, 61, 0.16); }
+        .primary-btn:hover { transform: translateY(-1px); }
+        .secondary-btn { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: var(--text); padding: 13px 18px; border-radius: 14px; border: 1px solid var(--line); }
+        .hero-sidebar { padding: 20px; display: grid; gap: 14px; }
+        .metric-pill { display: grid; grid-template-columns: 42px 1fr; gap: 12px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(180deg, #fff, #f9fbff); }
+        .metric-pill-icon { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: var(--blue-soft); color: var(--blue); }
+        .metric-pill-title { font-weight: 700; margin-bottom: 2px; }
+        .metric-pill-body { color: var(--muted); font-size: 0.93rem; line-height: 1.55; }
+        .section-head { display: flex; justify-content: space-between; gap: 18px; align-items: end; }
+        .section-head h2 { margin: 8px 0 0; font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.1; letter-spacing: -0.03em; }
+        .section-head p { margin: 8px 0 0; color: var(--muted); line-height: 1.65; max-width: 64ch; }
+        .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+        .feature-card { text-align: left; padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(180deg, #ffffff, #f9fbff); cursor: pointer; transition: 160ms ease; }
+        .feature-card:hover { transform: translateY(-2px); box-shadow: 0 16px 28px rgba(18, 32, 51, 0.08); border-color: #cfd9ee; }
+        .feature-card-top, .feature-card-meta, .inline-meta { display: flex; align-items: center; gap: 10px; }
+        .feature-card-top { justify-content: space-between; color: var(--muted-2); font-size: 0.82rem; }
+        .feature-card-title { margin-top: 14px; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+        .feature-card-body { margin-top: 8px; color: var(--muted); line-height: 1.6; min-height: 76px; }
+        .feature-card-meta { margin-top: 14px; flex-wrap: wrap; color: var(--muted-2); font-size: 0.85rem; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
+        .badge-slate { background: #f2f5f9; color: #5f6b7e; }
+        .badge-blue { background: var(--blue-soft); color: var(--blue); }
+        .badge-green { background: var(--green-soft); color: var(--green); }
+        .badge-amber { background: var(--amber-soft); color: var(--amber); }
+        .visual-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); gap: 20px; }
+        .flow-card, .anatomy-card, .panel-card, .help-card { padding: 24px; }
+        .flow-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+        .flow-step { padding: 16px; border-radius: 20px; border: 1px solid var(--line); background: linear-gradient(180deg, #ffffff, #f8faff); }
+        .flow-step-index { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: #16253d; color: #fff; font-weight: 700; font-size: 0.85rem; }
+        .flow-step-title { margin-top: 14px; font-weight: 700; }
+        .flow-step-body { margin-top: 6px; color: var(--muted); line-height: 1.55; font-size: 0.93rem; }
+        .anatomy-list { margin-top: 18px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .anatomy-item { padding: 14px; border-radius: 18px; border: 1px solid var(--line); background: #fbfcff; }
+        .anatomy-item-title { font-weight: 700; }
+        .anatomy-item-body { margin-top: 6px; color: var(--muted); line-height: 1.5; font-size: 0.92rem; }
+        .library-shell { display: grid; grid-template-columns: minmax(310px, 0.95fr) minmax(0, 1.2fr); gap: 20px; }
+        .library-side { padding: 20px; }
+        .library-top { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 16px; }
+        .results-count { font-size: 0.92rem; color: var(--muted); }
+        .filter-stack { display: grid; gap: 12px; margin-bottom: 16px; }
+        .filter-row { display: grid; grid-template-columns: minmax(0, 1.25fr) repeat(3, minmax(0, 1fr)); gap: 10px; }
+        .search-input { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: #fff; color: var(--muted); }
+        .search-input input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--text); }
+        .select { width: 100%; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--text); padding: 12px 14px; outline: 0; }
+        .entry-list { display: grid; gap: 12px; }
+        .entry-card { width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(180deg, #fff, #fafcff); padding: 16px; cursor: pointer; transition: 160ms ease; }
+        .entry-card:hover { border-color: #cfdaef; }
+        .entry-card.active { border-color: #bfd0f8; box-shadow: inset 0 0 0 1px #bfd0f8; background: #f8fbff; }
+        .entry-card-top { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+        .entry-title { font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; }
+        .entry-sub { margin-top: 6px; color: var(--muted); line-height: 1.55; font-size: 0.92rem; }
+        .entry-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; color: var(--muted-2); font-size: 0.82rem; }
+        .entry-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        .chip { display: inline-flex; align-items: center; padding: 7px 10px; border-radius: 999px; background: #f3f6fb; color: var(--muted); font-size: 0.8rem; }
+        .detail-panel { padding: 24px; }
+        .detail-top { display: flex; justify-content: space-between; gap: 18px; align-items: start; }
+        .detail-kicker { color: var(--blue); font-size: 0.83rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+        .detail-panel h2 { margin: 10px 0 8px; font-size: clamp(1.6rem, 2.4vw, 2.3rem); line-height: 1.08; letter-spacing: -0.04em; }
+        .detail-panel p { margin: 0; color: var(--muted); line-height: 1.7; }
+        .detail-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .icon-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 14px; border-radius: 14px; border: 1px solid var(--line); background: #fff; color: var(--text); }
+        .detail-stats { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; color: var(--muted-2); font-size: 0.85rem; }
+        .detail-stats span { display: inline-flex; align-items: center; gap: 7px; }
+        .info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+        .info-card { padding: 16px; border-radius: 18px; border: 1px solid var(--line); background: #fbfcff; }
+        .info-card-title { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; margin-bottom: 10px; }
+        .info-card p { margin: 0; font-size: 0.93rem; }
+        .code-grid { display: grid; gap: 12px; margin-top: 20px; }
+        .code-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .code-block { border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: #0f1a2d; }
+        .code-title { padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.08); color: #dfe8ff; font-weight: 700; font-size: 0.86rem; }
+        .code-block pre { margin: 0; padding: 16px; white-space: pre-wrap; line-height: 1.62; color: #edf2ff; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.89rem; }
+        .submit-layout { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr); gap: 20px; }
+        .submit-form, .submit-side { padding: 24px; }
+        .form-grid { display: grid; gap: 12px; }
+        .form-row-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .form-field label { display: block; margin-bottom: 8px; font-weight: 700; }
+        .mock-input { min-height: 50px; display: flex; align-items: center; padding: 13px 14px; border: 1px solid var(--line); border-radius: 16px; background: #fbfcff; color: var(--muted); line-height: 1.55; }
+        .form-field-large .mock-input { min-height: 96px; align-items: start; padding-top: 14px; }
+        .submit-cta { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .help-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+        .compact-list { margin: 14px 0 0; padding-left: 18px; color: var(--muted); line-height: 1.72; }
+        .level-table { margin-top: 18px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+        .level-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); }
+        .level-row + .level-row { border-top: 1px solid var(--line); }
+        .level-key, .level-value { padding: 16px; }
+        .level-key { background: #f8fbff; font-weight: 700; }
+        .cover-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+        .cover-box { padding: 16px; border-radius: 18px; border: 1px solid var(--line); }
+        .cover-box h3 { margin: 0 0 8px; font-size: 1rem; }
+        .cover-box p, .cover-box li { color: var(--muted); line-height: 1.65; }
+        .cover-box ul { margin: 10px 0 0; padding-left: 18px; }
+        .mobile-tabs { display: none; }
 
-  @media (max-width: 640px) {
-    .top-banner-right { display: none; }
-    .hero-copy h1 { max-width: none; font-size: 34px; }
-    .hero-copy p, .section-body { font-size: 15px; }
-    .flow-step { min-width: 250px; }
-    .entry-card-top, .review-card-top { flex-direction: column; }
-    .list-top-row { align-items: flex-start; flex-direction: column; }
-    .search-box { min-height: 46px; }
-    .device-screen { height: 180px; }
-  }
-`;
+        @media (max-width: 1200px) {
+          .hero, .visual-grid, .library-shell, .submit-layout { grid-template-columns: 1fr; }
+          .feature-grid, .help-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 920px) {
+          .page { padding: 18px; }
+          .topbar { padding: 14px 16px; }
+          .top-search { min-width: 0; width: 100%; }
+          .topbar { align-items: stretch; flex-direction: column; }
+          .topbar-actions { width: 100%; flex-direction: column; align-items: stretch; }
+          .nav-pills { display: none; }
+          .mobile-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+          .mobile-tabs button { display: grid; place-items: center; gap: 6px; padding: 10px 8px; border-radius: 14px; border: 1px solid var(--line); background: #fff; color: var(--muted); }
+          .mobile-tabs button.active { background: #16253d; border-color: #16253d; color: #fff; }
+          .filter-row, .form-row-2, .code-grid.two, .info-grid, .help-grid, .cover-grid, .anatomy-list, .flow-steps { grid-template-columns: 1fr; }
+          .feature-grid { grid-template-columns: 1fr; }
+          .detail-top, .section-head { flex-direction: column; align-items: start; }
+        }
+        @media (max-width: 640px) {
+          .portal-shell { padding: 10px; }
+          .portal-frame { border-radius: 24px; }
+          .hero-main, .hero-sidebar, .flow-card, .anatomy-card, .panel-card, .help-card, .library-side, .detail-panel, .submit-form, .submit-side { padding: 18px; }
+          .hero h1 { max-width: 11ch; }
+          .brand-subtitle { white-space: normal; }
+          .detail-stats { gap: 10px; }
+          .entry-card-top { flex-direction: column; }
+          .level-row { grid-template-columns: 1fr; }
+        }
+      `}</style>
+
+      <div className="portal-frame">
+        <header className="topbar">
+          <div className="brand">
+            <div className="brand-badge"><Icon name="spark" size={18} /></div>
+            <div className="brand-copy">
+              <div className="brand-title">AI Workflow and Prompt Portal</div>
+              <div className="brand-subtitle">Find proven workflows, use them with the right context, and share what works.</div>
+            </div>
+          </div>
+
+          <div className="topbar-actions">
+            <div className="top-search">
+              <Icon name="search" size={16} />
+              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search workflows, roles, or use cases" />
+            </div>
+            <nav className="nav-pills">
+              {tabs.map((tab) => (
+                <button key={tab.id} className={`nav-pill ${activeTab === tab.id ? 'active' : ''}`} onClick={() => setActiveTab(tab.id)}>
+                  <Icon name={tab.icon} size={15} /> {tab.label}
+                </button>
+              ))}
+            </nav>
+            <div className="mobile-tabs">
+              {tabs.map((tab) => (
+                <button key={tab.id} className={activeTab === tab.id ? 'active' : ''} onClick={() => setActiveTab(tab.id)}>
+                  <Icon name={tab.icon} size={16} />
+                  <span style={{ fontSize: '0.78rem' }}>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </header>
+
+        <main className="page">
+          {activeTab === 'discover' && (
+            <div className="stack">
+              <section className="hero">
+                <div className="hero-main card">
+                  <div className="eyebrow"><Icon name="target" size={14} /> For everyday work</div>
+                  <h1>Find the right workflow and use it well.</h1>
+                  <p>
+                    This library helps you find proven AI workflows, understand what context they need, and adapt them to your own task without starting from zero.
+                  </p>
+                  <div className="hero-cta">
+                    <button className="primary-btn" onClick={() => setActiveTab('library')}><Icon name="search" size={16} /> Browse library</button>
+                    <button className="secondary-btn" onClick={() => setActiveTab('submit')}><Icon name="plus" size={16} /> Submit a workflow</button>
+                  </div>
+                </div>
+                <aside className="hero-sidebar card">
+                  {quickFacts.map((item) => (
+                    <MetricPill key={item.title} {...item} />
+                  ))}
+                </aside>
+              </section>
+
+              <section className="card panel-card">
+                <div className="section-head">
+                  <div>
+                    <div className="eyebrow"><Icon name="spark" size={14} /> Start here</div>
+                    <h2>Featured workflows</h2>
+                    <p>These are strong examples of workflows that are easy to understand, easy to adapt, and clear about where they work best.</p>
+                  </div>
+                </div>
+                <div className="feature-grid" style={{ marginTop: 18 }}>
+                  {featured.map((entry) => (
+                    <FeatureCard key={entry.id} entry={entry} onOpen={openEntry} />
+                  ))}
+                </div>
+              </section>
+
+              <section className="visual-grid">
+                <div className="card flow-card">
+                  <div className="section-head">
+                    <div>
+                      <div className="eyebrow"><Icon name="route" size={14} /> Simple flow</div>
+                      <h2>How to use the library</h2>
+                      <p>Use the library as a starting point. Search for a workflow, read the context requirements, adapt the example, and then run it in your own environment.</p>
+                    </div>
+                  </div>
+                  <div className="flow-steps">
+                    {flows.map((item, idx) => (
+                      <div className="flow-step" key={item.title}>
+                        <div className="flow-step-index">0{idx + 1}</div>
+                        <div className="flow-step-title">{item.title}</div>
+                        <div className="flow-step-body">{item.body}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="card anatomy-card">
+                  <div className="section-head">
+                    <div>
+                      <div className="eyebrow"><Icon name="grid" size={14} /> Entry anatomy</div>
+                      <h2>What every workflow entry includes</h2>
+                      <p>The goal is not just to give you a prompt. The goal is to give you enough structure to use it correctly.</p>
+                    </div>
+                  </div>
+                  <div className="anatomy-list">
+                    {anatomy.map(([title, body]) => (
+                      <div className="anatomy-item" key={title}>
+                        <div className="anatomy-item-title">{title}</div>
+                        <div className="anatomy-item-body">{body}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </div>
+          )}
+
+          {activeTab === 'library' && (
+            <div className="stack">
+              <section className="card panel-card">
+                <div className="section-head">
+                  <div>
+                    <div className="eyebrow"><Icon name="book" size={14} /> Library</div>
+                    <h2>Browse by role, workflow type, or keyword</h2>
+                    <p>Open a workflow to see what it does, what context it needs, one example, and where it can fail.</p>
+                  </div>
+                  <Badge tone="slate"><Icon name="clock" size={13} /> Under 2 min per entry</Badge>
+                </div>
+              </section>
+
+              <section className="library-shell">
+                <div className="card library-side">
+                  <div className="library-top">
+                    <div className="results-count">{filteredEntries.length} workflows</div>
+                    <Badge tone="blue"><Icon name="filter" size={13} /> Filtered view</Badge>
+                  </div>
+                  <div className="filter-stack">
+                    <div className="search-input">
+                      <Icon name="search" size={16} />
+                      <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by title, use case, role, or contributor" />
+                    </div>
+                    <div className="filter-row">
+                      <Select value={role} onChange={setRole} options={roleOptions} />
+                      <Select value={type} onChange={setType} options={typeOptions} />
+                      <Select value={level} onChange={setLevel} options={reusabilityOptions} />
+                      <button className="secondary-btn" onClick={() => { setRole('All roles'); setType('All types'); setLevel('All levels'); setSearch(''); }}>
+                        Reset
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="entry-list">
+                    {filteredEntries.map((entry) => (
+                      <button key={entry.id} className={`entry-card ${selectedEntry?.id === entry.id ? 'active' : ''}`} onClick={() => setSelectedId(entry.id)}>
+                        <div className="entry-card-top">
+                          <div>
+                            <div className="entry-title">{entry.title}</div>
+                            <div className="entry-sub">{entry.useCase}</div>
+                          </div>
+                          <Badge tone={entry.reusability === 'Cross-company' ? 'green' : entry.reusability === 'Team' ? 'blue' : 'slate'}>{entry.reusability}</Badge>
+                        </div>
+                        <div className="entry-meta">
+                          <span><Icon name="users" size={13} /> {entry.role}</span>
+                          <span><Icon name="layers" size={13} /> {entry.type}</span>
+                          <span><Icon name="clock" size={13} /> {entry.readTime}</span>
+                        </div>
+                        <div className="entry-chips">
+                          <span className="chip">{entry.contributor}</span>
+                          <span className="chip">Example included</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="card detail-panel">
+                  {selectedEntry ? (
+                    <>
+                      <div className="detail-top">
+                        <div>
+                          <div className="detail-kicker">{selectedEntry.type} · {selectedEntry.role}</div>
+                          <h2>{selectedEntry.title}</h2>
+                          <p>{selectedEntry.useCase}</p>
+                        </div>
+                        <div className="detail-actions">
+                          <Badge tone={selectedEntry.reusability === 'Cross-company' ? 'green' : selectedEntry.reusability === 'Team' ? 'blue' : 'slate'}>{selectedEntry.reusability}</Badge>
+                          <button className="icon-btn" onClick={handleCopy}><Icon name="copy" size={15} /> {copiedId === selectedEntry.id ? 'Copied' : 'Copy prompt'}</button>
+                        </div>
+                      </div>
+
+                      <div className="detail-stats">
+                        <span><Icon name="eye" size={13} /> {selectedEntry.views} views</span>
+                        <span><Icon name="copy" size={13} /> {selectedEntry.copies} copies</span>
+                        <span><Icon name="clock" size={13} /> {selectedEntry.readTime}</span>
+                        <span><Icon name="users" size={13} /> {selectedEntry.contributor}</span>
+                      </div>
+
+                      <div className="info-grid">
+                        <InfoCard icon="file" title="Required context" body={selectedEntry.requiredContext} />
+                        <InfoCard icon="spark" title="Usage notes" body={selectedEntry.notes} />
+                        <InfoCard icon="warning" title="Known limitations" body={selectedEntry.limitations} />
+                        <InfoCard icon="shield" title="Typical failure modes" body={selectedEntry.failures} />
+                      </div>
+
+                      <div className="code-grid">
+                        <CodeBlock title="Prompt or workflow" text={selectedEntry.prompt} />
+                        <div className="code-grid two">
+                          <CodeBlock title="Example input" text={selectedEntry.input} />
+                          <CodeBlock title="Example output" text={selectedEntry.output} />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div>No workflows match the current filters.</div>
+                  )}
+                </div>
+              </section>
+            </div>
+          )}
+
+          {activeTab === 'submit' && (
+            <div className="stack">
+              <section className="submit-layout">
+                <div className="card submit-form">
+                  <div className="section-head">
+                    <div>
+                      <div className="eyebrow"><Icon name="send" size={14} /> Submit</div>
+                      <h2>Share a workflow that others can actually use</h2>
+                      <p>Keep it practical. A strong submission explains the job, shows one example, and is honest about what still needs correction.</p>
+                    </div>
+                    <Badge tone="blue"><Icon name="clock" size={13} /> 5 to 10 min</Badge>
+                  </div>
+
+                  <div className="form-grid" style={{ marginTop: 18 }}>
+                    <FormField label="Title" placeholder="Give the workflow a short searchable name." />
+                    <FormField label="What problem does it solve?" placeholder="State the job this workflow helps someone do." large />
+                    <FormField label="Prompt or workflow" placeholder="Paste the prompt or describe the steps in a short sequence." large />
+                    <div className="form-row-2">
+                      <FormField label="Required context" placeholder="List the inputs or background this workflow needs." large />
+                      <FormField label="One example" placeholder="Show a simple input and output pattern." large />
+                    </div>
+                    <div className="form-row-2">
+                      <FormField label="What works well" placeholder="When does this work best?" large />
+                      <FormField label="What fails or needs correction" placeholder="Where does it usually break down?" large />
+                    </div>
+                    <div className="form-row-2">
+                      <FormField label="Who should use it?" placeholder="Role, team, or workflow type." />
+                      <FormField label="Reusability level" placeholder="Personal, team, or cross-company." />
+                    </div>
+                    <FormField label="Contributor" placeholder="Add your name so others can follow up if needed." />
+                  </div>
+
+                  <div className="submit-cta">
+                    <button className="primary-btn"><Icon name="upload" size={16} /> Submit for review</button>
+                    <button className="secondary-btn"><Icon name="file" size={16} /> Save draft</button>
+                  </div>
+                </div>
+
+                <aside className="card submit-side">
+                  <div className="section-head">
+                    <div>
+                      <div className="eyebrow"><Icon name="check" size={14} /> Before you submit</div>
+                      <h2>What makes a good entry</h2>
+                    </div>
+                  </div>
+                  <ul className="compact-list">
+                    <li>Describe the job to be done, not only the prompt text.</li>
+                    <li>Include one real example so the next user can see the pattern.</li>
+                    <li>Write the required context clearly. Weak context leads to weak output.</li>
+                    <li>Be direct about limitations. That saves time later.</li>
+                  </ul>
+
+                  <div className="cover-grid">
+                    <div className="cover-box" style={{ background: '#fbfcff' }}>
+                      <h3>What happens next</h3>
+                      <ul>
+                        <li>Your submission is checked for clarity and completeness.</li>
+                        <li>It is tagged so others can find it by role, type, and use case.</li>
+                        <li>Once ready, it appears in the shared library.</li>
+                      </ul>
+                    </div>
+                    <div className="cover-box" style={{ background: '#fffaf4' }}>
+                      <h3>What to avoid</h3>
+                      <ul>
+                        <li>A raw prompt with no example.</li>
+                        <li>A long narrative with no clear structure.</li>
+                        <li>Claiming broad reuse when it is still personal.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </aside>
+              </section>
+            </div>
+          )}
+
+          {activeTab === 'help' && (
+            <div className="stack">
+              <section className="help-grid">
+                <div className="card help-card">
+                  <div className="eyebrow"><Icon name="book" size={14} /> What this library covers</div>
+                  <h2 style={{ margin: '12px 0 0', fontSize: '1.35rem', lineHeight: 1.15, letterSpacing: '-0.03em' }}>Prompts plus workflow context</h2>
+                  <ul className="compact-list">
+                    <li>When to use a workflow</li>
+                    <li>What good output looks like</li>
+                    <li>What usually goes wrong</li>
+                    <li>Whether it is personal, team, or cross-company</li>
+                  </ul>
+                </div>
+
+                <div className="card help-card">
+                  <div className="eyebrow"><Icon name="layers" size={14} /> Reusability levels</div>
+                  <h2 style={{ margin: '12px 0 0', fontSize: '1.35rem', lineHeight: 1.15, letterSpacing: '-0.03em' }}>Choose the smallest useful level</h2>
+                  <div className="level-table">
+                    {reusabilityRows.map((row) => (
+                      <div className="level-row" key={row.label}>
+                        <div className="level-key"><Badge tone={row.tone}>{row.label}</Badge></div>
+                        <div className="level-value">{row.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="card help-card">
+                  <div className="eyebrow"><Icon name="warning" size={14} /> Scope</div>
+                  <h2 style={{ margin: '12px 0 0', fontSize: '1.35rem', lineHeight: 1.15, letterSpacing: '-0.03em' }}>What this version does not try to do</h2>
+                  <ul className="compact-list">
+                    <li>It does not solve connected data access or security.</li>
+                    <li>It does not build prompts for you automatically.</li>
+                    <li>It does not standardize every workflow at once.</li>
+                    <li>It focuses on strong reusable entries that are easy to find and easy to use.</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section className="visual-grid">
+                <div className="card help-card">
+                  <div className="section-head">
+                    <div>
+                      <div className="eyebrow"><Icon name="target" size={14} /> Faster understanding</div>
+                      <h2>Use examples before you copy</h2>
+                      <p>The quickest way to understand a workflow is to read the example input and output first. Then check required context and limitations before you copy the prompt.</p>
+                    </div>
+                  </div>
+                  <div className="cover-grid">
+                    <div className="cover-box" style={{ background: '#f8fbff' }}>
+                      <h3>Best reading order</h3>
+                      <ul>
+                        <li>Use case</li>
+                        <li>Example input and output</li>
+                        <li>Required context</li>
+                        <li>Usage notes and limitations</li>
+                      </ul>
+                    </div>
+                    <div className="cover-box" style={{ background: '#fbfcff' }}>
+                      <h3>Why this helps</h3>
+                      <ul>
+                        <li>Less guesswork</li>
+                        <li>Fewer re-prompt loops</li>
+                        <li>More consistent output quality</li>
+                        <li>Faster reuse across the team</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card help-card">
+                  <div className="section-head">
+                    <div>
+                      <div className="eyebrow"><Icon name="shield" size={14} /> Good practice</div>
+                      <h2>Treat this as a starting point, not autopilot</h2>
+                      <p>The library helps you start from a stronger pattern. You still need to review output, check factual accuracy, and adjust for the real context of your task.</p>
+                    </div>
+                  </div>
+                  <ul className="compact-list">
+                    <li>Do not assume the prompt is enough without context.</li>
+                    <li>Do not skip the limitation notes.</li>
+                    <li>Do not treat a personal workflow as broadly reusable unless it has been tested that way.</li>
+                    <li>Do reuse patterns that save time and improve clarity for others.</li>
+                  </ul>
+                </div>
+              </section>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}
